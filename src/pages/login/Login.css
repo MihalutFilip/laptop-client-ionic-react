@@ -1,0 +1,15 @@
+  .invalid-credentials {
+    font-size: 15px;
+    color: red;
+    margin-top: 12px;
+  }
+
+  .login-container {
+    margin-top: 50%;
+    margin-left: 40%;
+  }
+  
+  .login-input {
+    margin-bottom: 3px;
+  }
+  
