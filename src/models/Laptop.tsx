@@ -1,7 +1,7 @@
 export interface Laptop {
     id: number;
     name: string;
-    price: string;
+    price?: string;
     brand?: string;
     memory?: string;
     processor?: string;
@@ -9,4 +9,5 @@ export interface Laptop {
     storage?: string;
     type?: string;
     videoCard?: string;
+    userId?: number;
 }

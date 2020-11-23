@@ -31,19 +31,29 @@ import { LoginProtectedRoute } from './guards/LoginProtectedRoute';
 import { Login } from './pages/login/Login';
 import { UserLaptopList } from './pages/user-laptop-list/UserLaptopList';
 import { LaptopList } from './pages/laptop-list/LaptopList';
-import { AddLaptop } from './pages/add-laptop/AddLaptop';
+import { UpdateLaptop } from './pages/update-laptop/UpdateLaptop';
+import { ViewLaptop } from './pages/view-laptop/ViewLaptop';
+import axios from 'axios';
+import LocalStorage from './utils/LocalStorage';
+
+axios.interceptors.request.use(async function (config) {
+  const user = await LocalStorage.getLoggedInUser();
+  config.headers.Authorization =  user ? user.token : '';
+  return config;
+});
 
 const App: React.FC = () => (
-  <IonApp>
-  <IonReactRouter>
-    <IonRouterOutlet>
-        <LoginProtectedRoute path="/login" component={Login} exact={true} />
-        <AuthProtectedRoute path="/" component={LaptopList} exact={true}/>
-        <AuthProtectedRoute path="/user-laptops" component={UserLaptopList} exact={true}/>
-        <AuthProtectedRoute path="/add-laptop" component={AddLaptop} exact={true}/>
-    </IonRouterOutlet>
-  </IonReactRouter>
-</IonApp>
+    <IonApp>
+    <IonReactRouter>
+      <IonRouterOutlet>
+          <LoginProtectedRoute path="/login" component={Login} exact={true} />
+          <AuthProtectedRoute path="/" component={LaptopList} exact={true}/>
+          <AuthProtectedRoute path="/user-laptops" component={UserLaptopList} exact={true}/>
+          <AuthProtectedRoute path="/update-laptop" component={UpdateLaptop} exact={true}/>
+          <AuthProtectedRoute path="/view-laptop" component={ViewLaptop} exact={true}/>
+      </IonRouterOutlet>
+    </IonReactRouter>
+  </IonApp>
 );
 
 export default App;

@@ -1,23 +1,46 @@
+import { Plugins } from "@capacitor/core/dist/esm/global";
 import React from "react";
+import { Laptop } from "../models/Laptop";
+import { User } from "../models/User";
 
-export default class LocalStorage extends React.Component {
-    getItem(key: string): string {
-        return localStorage.getItem(key) || '';
+const { Storage } = Plugins;
+
+export default class LocalStorage {
+    private static async getItem(key: string): Promise<string> {
+        return await localStorage.getItem(key) || '';
     }
 
-    removeItem(key: string){
-        localStorage.removeItem(key);
+    private static async removeItem(key: string){
+        await localStorage.removeItem(key);
     }
 
-    setItem(key: string, value: string){
-        localStorage.setItem(key, value);
+    private static async setItem(key: string, value: string){
+        await localStorage.setItem(key, value);
     }
 
-    clear(){
-        localStorage.clear();
+    static async clear(){
+        await localStorage.clear();
     }
 
-    getLoggedInUser(){
-        return JSON.parse(this.getItem('loggedInUser'));
+    static async setLoggedInUser(user: User) {
+        return await this.setItem('loggedInUser', JSON.stringify(user));
+    }
+
+    static async getLoggedInUser(){
+        var item = await this.getItem('loggedInUser');
+        return item ? JSON.parse(item) : item;
+    }
+
+    static async setClickedLaptop(laptop: Laptop) {
+        return await this.setItem('clickedLaptop', JSON.stringify(laptop));
+    }
+    
+    static async clearClickedLaptop() {
+        await localStorage.removeItem('clickedLaptop');
+    }
+
+    static async getClickedLaptop() {
+        var item = await this.getItem('clickedLaptop');
+        return item ? JSON.parse(item) : item;
     }
 }

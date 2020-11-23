@@ -3,7 +3,7 @@ import axios from 'axios';
 import { baseUrl, config } from '../utils/Cofingurations';
 import { Laptop } from '../models/Laptop';
 
-const itemUrl = `${baseUrl}laptop`;
+const itemUrl = `${baseUrl}/laptop`;
 
 export const getUserLaptops: (page: number, userId: number) => Promise<any> = (page, userId) => {
   return axios.get(`${itemUrl}?page=${page}&userId=${userId}`);
@@ -18,5 +18,5 @@ export const saveLaptop: (item: Laptop) => Promise<Laptop[]> = (item) => {
 }
 
 export const updateLaptop: (item: Laptop) => Promise<Laptop[]> = (item) => {
-  return axios.put(`${itemUrl}/${item.id}`, item);
+  return axios.put(`${itemUrl}`, item);
 }

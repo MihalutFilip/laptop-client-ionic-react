@@ -9,7 +9,7 @@ export interface PrivateRouteProps {
 }
 
 export const LoginProtectedRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
-    const isAuthenticated = localStorage.getItem('loggedInUser');;
+    const isAuthenticated = localStorage.getItem('loggedInUser');
     return (
       <Route {...rest} render={props => {
         if (!isAuthenticated) {

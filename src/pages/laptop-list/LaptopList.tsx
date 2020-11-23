@@ -22,6 +22,7 @@ export const LaptopList: React.FC<LaptopListProps> = () => {
 
     function fetchLaptops() {
         return getLaptops(page).then(result => {
+            console.log(result);
             setLaptops([...laptops, ...result.data])
             setPage(page + 1)
             if (result.data.length < 13)
@@ -43,30 +44,28 @@ export const LaptopList: React.FC<LaptopListProps> = () => {
         <IonPage>
             <Header />
             {
-                    <IonContent>
-                        <IonSearchbar
-                            value={searchWord}
-                            debounce={1000}
-                            onIonChange={e => setSearchWord(e.detail.value!)}>
-                        </IonSearchbar>
+                <IonContent>
+                    <IonSearchbar
+                        value={searchWord}
+                        debounce={1000}
+                        onIonChange={e => setSearchWord(e.detail.value!)}>
+                    </IonSearchbar>
+                    <IonList>
                         {
-                            laptops && (
-                                <IonList>
-                                    {
-                                        laptops
-                                            .filter(laptop => laptop.name.indexOf(searchWord) >= 0)
-                                            .map((laptop) =>
-                                                <LaptopItem key={laptop.id} laptop={laptop} />)
-                                    }
-                                </IonList>
-                            )}
-                        <IonInfiniteScroll threshold="100px" disabled={disableInfiniteScroll}
-                            onIonInfinite={(e: CustomEvent<void>) => nextPageOfScroll(e)}>
-                            <IonInfiniteScrollContent
-                                loadingText="Loading more laptops...">
-                            </IonInfiniteScrollContent>
-                        </IonInfiniteScroll>
-                    </IonContent>
+                            laptops
+                                .filter(laptop => laptop.name.indexOf(searchWord) >= 0)
+                                .map((laptop) =>
+                                    <LaptopItem key={laptop.id} laptop={laptop} isUserItem={false}/>
+                                )
+                        }
+                    </IonList>
+                    <IonInfiniteScroll threshold="100px" disabled={disableInfiniteScroll}
+                        onIonInfinite={(e: CustomEvent<void>) => nextPageOfScroll(e)}>
+                        <IonInfiniteScrollContent
+                            loadingText="Loading more laptops...">
+                        </IonInfiniteScrollContent>
+                    </IonInfiniteScroll>
+                </IonContent>
             }
             <BottomBar />
         </IonPage>

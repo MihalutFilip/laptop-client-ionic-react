@@ -9,6 +9,7 @@ import { getLaptops, getUserLaptops } from '../../api/LaptopApi';
 import LocalStorage from '../../utils/LocalStorage';
 import { Header } from '../../components/header/Header';
 import { BottomBar } from '../../components/bottom-bar/BottomBar';
+import { UpdateLaptop } from '../update-laptop/UpdateLaptop';
 
 interface UserLaptopListProps {
 
@@ -21,10 +22,9 @@ export const UserLaptopList: React.FC<UserLaptopListProps> = () => {
     const [searchWord, setSearchWord] = useState<string>('');
     const [page, setPage] = useState<number>(0);
 
-    function fetchLaptops() {
-        var localStorage = new LocalStorage({});
-
-        return getUserLaptops(page, localStorage.getLoggedInUser().id).then(result => {
+    async function fetchLaptops() {
+        var loggedUser = await LocalStorage.getLoggedInUser();
+        return getUserLaptops(page, loggedUser.id).then(result => {
             setLaptops([...laptops, ...result.data])
             setPage(page + 1)
 
@@ -43,44 +43,48 @@ export const UserLaptopList: React.FC<UserLaptopListProps> = () => {
         fetchLaptops();
     });
 
+    function onAddLaptop() {
+        LocalStorage.clearClickedLaptop();
+        setShouldRedirect(true);
+    }
+
     return (
         <IonPage>
             <Header />
-            {
-                shouldRedirect ?
-                    <Redirect to="/add-laptop" /> :
-                    <IonContent>
-                        <IonSearchbar
-                            value={searchWord}
-                            debounce={1000}
-                            onIonChange={e => setSearchWord(e.detail.value!)}>
-                        </IonSearchbar>
-                        {
-                            laptops && (
-                                <IonList>
-                                    {
-                                        laptops
-                                            .filter(laptop => laptop.name.indexOf(searchWord) >= 0)
-                                            .map((laptop) =>
-                                                <LaptopItem key={laptop.id} laptop={laptop} />)
-                                    }
-                                </IonList>
-                            )}
-                        <IonInfiniteScroll threshold="100px" disabled={disableInfiniteScroll}
-                            onIonInfinite={(e: CustomEvent<void>) => nextPageOfScroll(e)}>
-                            <IonInfiniteScrollContent
-                                loadingText="Loading more laptops...">
-                            </IonInfiniteScrollContent>
-                        </IonInfiniteScroll>
-                        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                            <div onClick={_ => setShouldRedirect(true)}>
-                                <IonFabButton>
-                                    <IonIcon icon={add} />
-                                </IonFabButton>
-                            </div>
+            { shouldRedirect ? <Redirect to="/update-laptop" /> : 
+                <IonContent>
+                    <IonSearchbar
+                        value={searchWord}
+                        debounce={1000}
+                        onIonChange={e => setSearchWord(e.detail.value!)}>
+                    </IonSearchbar>
+                    {
+                        laptops && (
+                            <IonList>
+                                {
+                                    laptops
+                                        .filter(laptop => laptop.name.indexOf(searchWord) >= 0)
+                                        .map((laptop) =>
+                                            <LaptopItem key={laptop.id} laptop={laptop} isUserItem={true} />
+                                        )
+                                }
+                            </IonList>
+                        )}
+                    <IonInfiniteScroll threshold="100px" disabled={disableInfiniteScroll}
+                        onIonInfinite={(e: CustomEvent<void>) => nextPageOfScroll(e)}>
+                        <IonInfiniteScrollContent
+                            loadingText="Loading more laptops...">
+                        </IonInfiniteScrollContent>
+                    </IonInfiniteScroll>
+                    <IonFab vertical="bottom" horizontal="end" slot="fixed">
+                        <div onClick={_ => onAddLaptop()}>
+                            <IonFabButton>
+                                <IonIcon icon={add} />
+                            </IonFabButton>
+                        </div>
 
-                        </IonFab>
-                    </IonContent>
+                    </IonFab>
+                </IonContent>
             }
             <BottomBar />
         </IonPage>
