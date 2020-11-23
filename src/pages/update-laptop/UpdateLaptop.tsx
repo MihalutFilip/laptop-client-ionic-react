@@ -2,17 +2,19 @@ import { IonButton, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInf
 import React, { useContext, useState } from 'react';
 import './UpdateLaptop.css';
 import { Laptop } from '../../models/Laptop';
-import { saveLaptop, updateLaptop } from '../../api/LaptopApi';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Header } from '../../components/header/Header';
 import { BottomBar } from '../../components/bottom-bar/BottomBar';
 import LocalStorage from '../../utils/LocalStorage';
+import { LaptopProvider } from '../../api/LaptopProvider';
+import { useNetworkStatus } from '../../utils/NetworkStatus';
 
 interface UpdateLaptopProps extends RouteComponentProps {
 }
 
 export const UpdateLaptop: React.FC<UpdateLaptopProps> = ({ history }) => {
     const [shouldRedirect, setShouldRedirect] = useState<boolean>(false);
+    const { networkStatus } = useNetworkStatus();
     const [laptop, setLaptop] = useState<Laptop>({
         id: 0,
         name: ''
@@ -22,9 +24,9 @@ export const UpdateLaptop: React.FC<UpdateLaptopProps> = ({ history }) => {
         let updatePromise;
 
         if(laptop.id == 0) {
-            updatePromise = saveLaptop(laptop);
+            updatePromise = LaptopProvider.getInstance().saveLaptop(laptop);
         } else {
-            updatePromise = updateLaptop(laptop);
+            updatePromise = LaptopProvider.getInstance().updateLaptop(laptop);
         }
 
         updatePromise.then(_ => {

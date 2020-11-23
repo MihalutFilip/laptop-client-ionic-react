@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
+import LocalStorage from '../utils/LocalStorage';
 
 export interface PrivateRouteProps {
     component: PropTypes.ReactNodeLike;
@@ -9,7 +10,8 @@ export interface PrivateRouteProps {
 }
 
 export const LoginProtectedRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
-    const isAuthenticated = localStorage.getItem('loggedInUser');
+    const isAuthenticated = LocalStorage.getLoggedInUser();
+
     return (
       <Route {...rest} render={props => {
         if (!isAuthenticated) {

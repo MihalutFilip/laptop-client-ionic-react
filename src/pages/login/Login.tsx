@@ -21,7 +21,6 @@ export const Login: React.FC<LoginProps> = () => {
             console.log(result);
             if (result.data != null) {
                 await LocalStorage.setLoggedInUser(result.data);
-                axios.defaults.headers.common['Authorization'] = result.data.token;
                 setShouldRedirect(true);
             } else {
                 setInvalidCredentials(true);

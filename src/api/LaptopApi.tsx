@@ -5,18 +5,22 @@ import { Laptop } from '../models/Laptop';
 
 const itemUrl = `${baseUrl}/laptop`;
 
-export const getUserLaptops: (page: number, userId: number) => Promise<any> = (page, userId) => {
-  return axios.get(`${itemUrl}?page=${page}&userId=${userId}`);
-}
-
-export const getLaptops: (page: number) => Promise<any> = (page) => {
-  return axios.get(`${itemUrl}?page=${page}`);
-}
-
-export const saveLaptop: (item: Laptop) => Promise<Laptop[]> = (item) => {
-  return axios.post(itemUrl, item);
-}
-
-export const updateLaptop: (item: Laptop) => Promise<Laptop[]> = (item) => {
-  return axios.put(`${itemUrl}`, item);
+export class LaptopApi {
+  private LaptopApi() {}
+  
+  protected getUserLaptopsApi: (page: number, userId: number) => Promise<any> = (page, userId) => {
+    return axios.get(`${itemUrl}?page=${page}&userId=${userId}`);
+  }
+  
+  protected getLaptopsApi: (page: number) => Promise<any> = (page) => {
+    return axios.get(`${itemUrl}?page=${page}`);
+  }
+  
+  protected saveLaptopApi: (item: Laptop) => Promise<Laptop[]> = (item) => {
+    return axios.post(itemUrl, item);
+  }
+  
+  protected updateLaptopApi: (item: Laptop) => Promise<Laptop[]> = (item) => {
+    return axios.put(`${itemUrl}`, item);
+  }
 }

@@ -2,7 +2,6 @@ import { IonButton, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInf
 import React, { useContext, useState } from 'react';
 import './ViewLaptop.css';
 import { Laptop } from '../../models/Laptop';
-import { saveLaptop, updateLaptop } from '../../api/LaptopApi';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Header } from '../../components/header/Header';
 import { BottomBar } from '../../components/bottom-bar/BottomBar';

@@ -3,11 +3,9 @@ import React from "react";
 import { Laptop } from "../models/Laptop";
 import { User } from "../models/User";
 
-const { Storage } = Plugins;
-
 export default class LocalStorage {
-    private static async getItem(key: string): Promise<string> {
-        return await localStorage.getItem(key) || '';
+    private static getItem(key: string): string {
+        return localStorage.getItem(key) || '';
     }
 
     private static async removeItem(key: string){
@@ -26,9 +24,9 @@ export default class LocalStorage {
         return await this.setItem('loggedInUser', JSON.stringify(user));
     }
 
-    static async getLoggedInUser(){
-        var item = await this.getItem('loggedInUser');
-        return item ? JSON.parse(item) : item;
+    static getLoggedInUser(){
+        var item = this.getItem('loggedInUser');
+        return item ? JSON.parse(item) : null;
     }
 
     static async setClickedLaptop(laptop: Laptop) {
@@ -41,6 +39,24 @@ export default class LocalStorage {
 
     static async getClickedLaptop() {
         var item = await this.getItem('clickedLaptop');
-        return item ? JSON.parse(item) : item;
+        return item ? JSON.parse(item) : null;
+    }
+
+    static async setLaptops(laptops: Laptop[]) {
+        return await this.setItem('laptops', JSON.stringify(laptops));
+    }
+
+    static getLaptops(){
+        var item = this.getItem('laptops');
+        return item ? JSON.parse(item) : null;
+    }
+
+    static async setConnection(connection: any) {
+        return await this.setItem('connection', JSON.stringify(connection));
+    }
+
+    static getConnection(){
+        var item = this.getItem('connection');
+        return item ? JSON.parse(item) : null;
     }
 }

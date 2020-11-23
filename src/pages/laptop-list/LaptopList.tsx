@@ -5,10 +5,11 @@ import { Laptop } from '../../models/Laptop';
 import { LaptopItem } from '../../components/laptop-item/LaptopItem';
 import { add } from 'ionicons/icons';
 import './LaptopList.css';
-import { getLaptops, getUserLaptops } from '../../api/LaptopApi';
 import LocalStorage from '../../utils/LocalStorage';
 import { Header } from '../../components/header/Header';
 import { BottomBar } from '../../components/bottom-bar/BottomBar';
+import { useNetworkStatus } from '../../utils/NetworkStatus';
+import { LaptopProvider } from '../../api/LaptopProvider';
 
 interface LaptopListProps {
 
@@ -21,13 +22,12 @@ export const LaptopList: React.FC<LaptopListProps> = () => {
     const [page, setPage] = useState<number>(0);
 
     function fetchLaptops() {
-        return getLaptops(page).then(result => {
-            console.log(result);
+        return LaptopProvider.getInstance().getLaptops(page).then(result => {
             setLaptops([...laptops, ...result.data])
             setPage(page + 1)
             if (result.data.length < 13)
                 setDisableInfiniteScroll(true);
-        })
+        });
     }
 
     function nextPageOfScroll($event: CustomEvent<void>) {

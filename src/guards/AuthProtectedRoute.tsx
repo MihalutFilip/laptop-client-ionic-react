@@ -1,7 +1,8 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
+import LocalStorage from '../utils/LocalStorage';
 
 export interface AuthProtectedProps {
     component: PropTypes.ReactNodeLike;
@@ -10,7 +11,8 @@ export interface AuthProtectedProps {
 }
 
 export const AuthProtectedRoute: React.FC<AuthProtectedProps> = ({ component: Component, ...rest }) => {
-    const isAuthenticated = localStorage.getItem('loggedInUser');
+  const isAuthenticated = LocalStorage.getLoggedInUser();
+
     return (
       <Route {...rest} render={props => {
         if (isAuthenticated) {
@@ -20,5 +22,6 @@ export const AuthProtectedRoute: React.FC<AuthProtectedProps> = ({ component: Co
         return <Redirect to={{ pathname: '/login' }}/>
       }}/>
     );
+    
 }
   

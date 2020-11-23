@@ -5,11 +5,12 @@ import { Laptop } from '../../models/Laptop';
 import { LaptopItem } from '../../components/laptop-item/LaptopItem';
 import { add } from 'ionicons/icons';
 import './UserLaptopList.css';
-import { getLaptops, getUserLaptops } from '../../api/LaptopApi';
 import LocalStorage from '../../utils/LocalStorage';
 import { Header } from '../../components/header/Header';
 import { BottomBar } from '../../components/bottom-bar/BottomBar';
 import { UpdateLaptop } from '../update-laptop/UpdateLaptop';
+import { LaptopProvider } from '../../api/LaptopProvider';
+import { useNetworkStatus } from '../../utils/NetworkStatus';
 
 interface UserLaptopListProps {
 
@@ -21,10 +22,11 @@ export const UserLaptopList: React.FC<UserLaptopListProps> = () => {
     const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(false);
     const [searchWord, setSearchWord] = useState<string>('');
     const [page, setPage] = useState<number>(0);
+    const { networkStatus } = useNetworkStatus();
 
     async function fetchLaptops() {
         var loggedUser = await LocalStorage.getLoggedInUser();
-        return getUserLaptops(page, loggedUser.id).then(result => {
+        return LaptopProvider.getInstance().getUserLaptops(page, loggedUser.id).then(result => {
             setLaptops([...laptops, ...result.data])
             setPage(page + 1)
 
