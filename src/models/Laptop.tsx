@@ -10,4 +10,7 @@ export interface Laptop {
     type?: string;
     videoCard?: string;
     userId?: number;
+    photoUrl?: string;
+    lat?: number;
+    long?: number;
 }

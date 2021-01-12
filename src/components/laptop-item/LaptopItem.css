@@ -1,11 +1,12 @@
 .price-label {
     float: right;
+    display: inline;
 }
 
 /* .laptop-parent {
     display: flex;
 } */
 
-.laptop-parent img {
-    height: 30px;
+img {
+    height: 30px !important;
 }

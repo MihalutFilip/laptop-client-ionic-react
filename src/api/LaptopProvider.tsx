@@ -17,7 +17,8 @@ export class LaptopProvider extends LaptopApi {
     }
 
     private isOnline = () => {
-        return LocalStorage.getConnection().connected;
+        return true;
+        //LocalStorage.getConnection().connected;
     }
 
     public getUserLaptops(page: number, userId: number) {
